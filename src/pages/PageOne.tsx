@@ -42,6 +42,9 @@ export default function PageOne() {
         <Button variant='outlined' onClick={handleCopyToClipboard}>
           Copy Second Input to Clipboard
         </Button>
+        <Button variant='text' color='error' onClick={() => setInputOne('')}>
+          Clear First Input
+        </Button>
       </Box>
       <TextField
         label='First Text Area'

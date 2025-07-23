@@ -4,5 +4,7 @@ import { defineConfig } from 'vite';
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => ({
   plugins: [react()],
+  base: '/textMagic/',
+
   esbuild: mode === 'production' ? { drop: ['console', 'debugger'] } : {},
 }));

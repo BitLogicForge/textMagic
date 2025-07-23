@@ -2,6 +2,7 @@
   "name": "textmagic",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://bitlogicforge.github.io/textMagic",
   "type": "module",
   "scripts": {
     "dev": "vite",
