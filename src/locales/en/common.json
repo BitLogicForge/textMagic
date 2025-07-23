@@ -1,0 +1,7 @@
+{
+  "app": {
+    "example": "Example"
+  },
+  "title": "React Template",
+  "description": "A React template with TypeScript, Material-UI, and i18n support."
+}

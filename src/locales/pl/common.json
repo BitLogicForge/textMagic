@@ -1,0 +1,8 @@
+{
+  "app": {
+    "example": "Przykład"
+  },
+
+  "title": "Szablon React",
+  "description": "Szablon React z TypeScript, Material-UI i wsparciem i18n."
+}
