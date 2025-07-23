@@ -13,7 +13,10 @@
     "type-check": "tsc --noEmit",
     "preview": "vite preview",
     "update": "npx npm-check-updates -u && npm install",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "deploy:clean": "gh-pages -d dist -c",
+    "git:fix": "git add . && git commit -m 'clean' && git push",
+    "modules:clean": "rm -rf node_modules && npm install"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
