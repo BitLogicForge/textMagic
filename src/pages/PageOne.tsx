@@ -8,6 +8,7 @@ export default function PageOne() {
       const text = await navigator.clipboard.readText();
       setInputOne(text);
     } catch (err) {
+      console.error('Failed to read clipboard contents: ', err);
       // Optionally handle error
     }
   };
@@ -20,6 +21,7 @@ export default function PageOne() {
         .join('');
       await navigator.clipboard.writeText(processed);
     } catch (err) {
+      console.error('Failed to write to clipboard: ', err);
       // Optionally handle error
     }
   };
