@@ -1,15 +1,19 @@
 {
   "name": "textmagic",
-  "image": "node:24-bookworm",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:dev-24-bookworm",
+  // "image": "node:24-bookworm",
   "runArgs": [
     "--name=textmagic-dev"
   ],
   "remoteUser": "node",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "mounts": [
-    "source=reactTemplate-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
+    "source=${localWorkspaceFolderBasename}-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume",
+    "source=devScripts,target=/workspaces/dev_scripts,type=volume"
   ],
-  // "postCreateCommand": "sudo chown -R node:node /workspaces/${localWorkspaceFolderBasename}/node_modules",
+  // "onCreateCommand": "sudo chown -R node:node /workspaces/${localWorkspaceFolderBasename}/node_modules && sudo chown -R node:node /workspaces/dev_scripts",
+  "postCreateCommand": "/workspaces/dev_scripts/post_create.sh",
+  "postStartCommand": "/workspaces/dev_scripts/post_start.sh",
   "forwardPorts": [
     5173,
     4173
@@ -17,7 +21,7 @@
   "portsAttributes": {
     "5173": {
       "label": "Vite dev server",
-      "onAutoForward": "notify",
+      "onAutoForward": "silent",
       "protocol": "http"
     },
     "4173": {
