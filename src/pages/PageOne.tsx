@@ -1,72 +1,102 @@
-import { Box, Button, Container, TextField } from '@mui/material';
-import { useState } from 'react';
+import { Box, Container, Divider, Grid, Typography } from '@mui/material';
+import { ActionButtons, PageHeader, TextCard } from '../components/PageOne';
+import { useClipboard } from '../hooks/useClipboard';
+import { useTextTransformer } from '../hooks/useTextTransformer';
 
-export default function PageOne() {
-  const [inputOne, setInputOne] = useState('');
-  const handlePasteFromClipboard = async () => {
-    try {
-      const text = await navigator.clipboard.readText();
-      setInputOne(text);
-    } catch (err) {
-      console.error('Failed to read clipboard contents: ', err);
-      // Optionally handle error
-    }
-  };
+const PAGE_CONFIG = {
+  header: {
+    title: 'Text Transformer',
+    description:
+      'Transform your text by filtering characters at even indices. Paste your content, see the transformed result, and copy it to your clipboard.',
+  },
+  infoMessage: 'This tool filters text keeping only characters at even indices (0, 2, 4, ...)',
+} as const;
 
-  const handleCopyToClipboard = async () => {
-    try {
-      const processed = inputOne
-        .split('')
-        .filter((_, i) => i % 2 === 0)
-        .join('');
-      await navigator.clipboard.writeText(processed);
-    } catch (err) {
-      console.error('Failed to write to clipboard: ', err);
-      // Optionally handle error
-    }
-  };
+function InfoMessage({ message }: { message: string }) {
   return (
-    <Container
+    <Box
       sx={{
         mt: 4,
-        minWidth: 300,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 2,
+        p: 2,
+        bgcolor: 'info.main',
+        borderRadius: 2,
+        opacity: 0.1,
       }}
     >
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
-        <Button variant='contained' onClick={handlePasteFromClipboard}>
-          Paste from Clipboard
-        </Button>
-        <Button variant='outlined' onClick={handleCopyToClipboard}>
-          Copy Second Input to Clipboard
-        </Button>
-        <Button variant='text' color='error' onClick={() => setInputOne('')}>
-          Clear First Input
-        </Button>
-      </Box>
-      <TextField
-        label='First Text Area'
-        multiline
-        minRows={8}
-        fullWidth
-        variant='outlined'
-        value={inputOne}
-        onChange={e => setInputOne(e.target.value)}
-      />
-      <TextField
-        label='Second Text Area'
-        multiline
-        minRows={8}
-        fullWidth
-        variant='outlined'
-        value={inputOne
-          .split('')
-          .filter((_, i) => i % 2 === 0)
-          .join('')}
-        slotProps={{ input: { 'aria-label': 'Second Text Area' } }}
-      />
-    </Container>
+      <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+        {message}
+      </Typography>
+    </Box>
+  );
+}
+
+export default function PageOne() {
+  const { text, setText, pasteFromClipboard, copyToClipboard } = useClipboard();
+  const {
+    processedText,
+    originalLength,
+    processedLength,
+    percentageOfOriginal,
+    hasContent,
+    hasProcessedContent,
+  } = useTextTransformer(text);
+
+  const handleCopy = async () => {
+    await copyToClipboard(processedText);
+  };
+
+  const handleClear = () => {
+    setText('');
+  };
+
+  return (
+    <Box
+      sx={{
+        minHeight: `calc(100vh - 64px)`,
+        bgcolor: 'background.default',
+        py: 4,
+      }}
+    >
+      <Container maxWidth="lg">
+        <PageHeader title={PAGE_CONFIG.header.title} description={PAGE_CONFIG.header.description} />
+
+        <ActionButtons
+          onPaste={pasteFromClipboard}
+          onCopy={handleCopy}
+          onClear={handleClear}
+          hasContent={hasContent}
+        />
+
+        <Divider sx={{ mb: 3 }} />
+
+        <Grid container spacing={3}>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <TextCard
+              title="Input Text"
+              value={text}
+              onChange={setText}
+              placeholder="Paste or type your text here..."
+              characterCount={originalLength}
+              hasContent={hasContent}
+            />
+          </Grid>
+
+          <Grid size={{ xs: 12, md: 6 }}>
+            <TextCard
+              title="Filtered Result"
+              value={processedText}
+              readOnly
+              characterCount={processedLength}
+              showPercentage
+              percentageValue={percentageOfOriginal}
+              badgeText="Even indices only"
+              hasContent={hasProcessedContent}
+            />
+          </Grid>
+        </Grid>
+
+        {hasContent && <InfoMessage message={PAGE_CONFIG.infoMessage} />}
+      </Container>
+    </Box>
   );
 }
