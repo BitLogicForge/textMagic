@@ -13,33 +13,49 @@ const darkTheme = {
   palette: {
     mode: THEME_MODES.DARK,
     primary: {
-      //700 is the main color,
-      main: '#388e3c',
-      light: '#5fa463',
-      dark: '#27632a',
+      main: '#4ade80',
+      light: '#86efac',
+      dark: '#22c55e',
+      contrastText: '#000',
     },
     secondary: {
-      main: '#f57c00',
-      light: '#f79633',
-      dark: '#ab5600',
+      main: '#f59e0b',
+      light: '#fbbf24',
+      dark: '#d97706',
+      contrastText: '#000',
     },
+    background: {
+      default: '#0f0f0f',
+      paper: '#1a1a1a',
+    },
+  },
+  shape: {
+    borderRadius: 12,
   },
 };
 
 const lightTheme = {
   palette: {
     mode: THEME_MODES.LIGHT,
-    //300 is the main color,
     primary: {
-      main: '#81c784',
-      light: '#9ad29c',
-      dark: '#5a8b5c',
+      main: '#22c55e',
+      light: '#4ade80',
+      dark: '#16a34a',
+      contrastText: '#fff',
     },
     secondary: {
-      main: '#ffb74d',
-      light: '#ffc570',
-      dark: '#b28035',
+      main: '#f59e0b',
+      light: '#fbbf24',
+      dark: '#d97706',
+      contrastText: '#fff',
     },
+    background: {
+      default: '#fafafa',
+      paper: '#ffffff',
+    },
+  },
+  shape: {
+    borderRadius: 12,
   },
 };
 
